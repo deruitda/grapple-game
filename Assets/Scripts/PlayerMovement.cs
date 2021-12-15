@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpSpeed = 3f;
     public bool groundCheck;
     public bool isSwinging;
+    public PlayerInfo PlayerInfo;
     private SpriteRenderer playerSprite;
     private Rigidbody2D rBody;
     private bool isJumping;
@@ -65,7 +66,10 @@ public class PlayerMovement : MonoBehaviour
         if (horizontalInput < 0f || horizontalInput > 0f)
         {
             animator.SetFloat("Speed", Mathf.Abs(horizontalInput));
-            playerSprite.flipX = horizontalInput < 0f;
+
+            FlipPlayer(horizontalInput);
+
+
             if (isSwinging)
             {
                 animator.SetBool("IsSwinging", true);
@@ -118,5 +122,13 @@ public class PlayerMovement : MonoBehaviour
                 rBody.velocity = new Vector2(rBody.velocity.x, jumpSpeed);
             }
         }
+    }
+
+    private void FlipPlayer(float input)
+    {
+        if (input < 0f && transform.localScale.x >= 0f)
+            transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y);
+        else if (input > 0f)
+            transform.localScale = new Vector2(Mathf.Abs(transform.localScale.x) , transform.localScale.y);
     }
 }
